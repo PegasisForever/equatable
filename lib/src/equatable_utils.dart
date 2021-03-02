@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
@@ -20,6 +21,8 @@ bool equals(List? list1, List? list2) {
 
     if (_isEquatable(unit1) && _isEquatable(unit2)) {
       if (unit1 != unit2) return false;
+    } else if (_isBuiltCollection(unit1)) {
+      if (unit1 != unit2) return false;
     } else if (unit1 is Iterable || unit1 is Map) {
       if (!_equality.equals(unit1, unit2)) return false;
     } else if (unit1?.runtimeType != unit2?.runtimeType) {
@@ -29,6 +32,14 @@ bool equals(List? list1, List? list2) {
     }
   }
   return true;
+}
+
+bool _isBuiltCollection(dynamic object) {
+  return object is BuiltList ||
+      object is BuiltMap ||
+      object is BuiltSet ||
+      object is BuiltListMultimap ||
+      object is BuiltSetMultimap;
 }
 
 bool _isEquatable(dynamic object) {
